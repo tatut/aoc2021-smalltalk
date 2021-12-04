@@ -7,6 +7,11 @@ Class {
 	#category : #AoC2021
 }
 
+{ #category : #actions }
+DayInput >> load: inputFile [ 
+	input := (FileLocator home / 'projects' / 'aoc2021' / inputFile) contents lines.
+]
+
 { #category : #initialization }
 DayInput >> load: inputFile using: parseLines [
 	"comment stating purpose of instance-side method"
