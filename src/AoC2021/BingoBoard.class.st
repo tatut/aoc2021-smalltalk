@@ -24,9 +24,9 @@ BingoBoard >> mark: aNumber [
 	marked add: aNumber 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #game }
 BingoBoard >> unmarkedNumbers [
-	"return set of all unmarked numbers"			
+	"return bag of all unmarked numbers"			
 	| s |
 	s := Bag new.
 	grid do: [ :r | r do: [ :n | (marked includes: n) ifFalse: [ s add: n ] ] ].
