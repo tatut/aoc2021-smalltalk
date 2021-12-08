@@ -76,8 +76,7 @@ Day8 >> part2 [
 	^ (input collect: [ :patAndOut |
  		patterns := (patAndOut at: 1).
 	   output := (patAndOut at: 2).
-	
-		"reverse digit to segments map"
+
 		d := (self findDigits: patterns).
 	 
 	   n := 0.
