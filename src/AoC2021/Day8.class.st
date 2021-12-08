@@ -26,8 +26,7 @@ Day8 >> findDigits: thePatterns [
 	segments permutationsDo: [ :perm |
 		| mapping digits |
 		"create mapping for this permutation"
-		mapping := Dictionary new.
-		1 to: 7 do: [ :i | mapping add: (perm at: i) -> (segments at: i) ].
+		mapping := (1 to: 7) collect: [ :i | (perm at: i) -> (segments at: i) ] into: Dictionary new.
 		
 		digits := patterns
 			 collect: [ :pat |
