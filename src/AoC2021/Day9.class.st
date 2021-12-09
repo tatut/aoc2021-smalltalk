@@ -4,6 +4,11 @@ Class {
 	#category : #AoC2021
 }
 
+{ #category : #parsing }
+Day9 class >> parseInput: lines [
+	^ lines collect: [ :line | line asArray collect: [ :c | c asString asNumber ] ] 
+]
+
 { #category : #accessing }
 Day9 >> at: aPoint [
 	^ (input at: aPoint y) at: aPoint x
@@ -43,7 +48,7 @@ Day9 >> lowPoints [
 			1 to: maxy do: [ :y |
 				| here adjacent |
 				here := self at: x@y.
-				adjacent := (x@y) fourNeighbors select: [ :p | (p x between: 1 and: maxx) & (p y between: 1 and: maxy) ].
+				adjacent := (x@y) fourNeighbors select: [ :p | self inBounds: p ].
 				((adjacent collect: [ :p | self at: p ]) allSatisfy: [ :a | a > here ]) ifTrue: [ out nextPut: x@y ].
 			]
 		]]

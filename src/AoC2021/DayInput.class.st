@@ -9,7 +9,8 @@ Class {
 
 { #category : #actions }
 DayInput >> load: inputFile [ 
-	input := (FileLocator home / 'projects' / 'aoc2021' / inputFile) contents lines.
+   "load input file and call self #parseInput"
+	input := self class parseInput: (FileLocator home / 'projects' / 'aoc2021' / inputFile) contents lines.
 ]
 
 { #category : #initialization }
@@ -24,5 +25,5 @@ DayInput >> load: inputFile using: parseLines [
 
 { #category : #initialization }
 DayInput >> loadSample: sampleInput [
-  	input := sampleInput 
+  	input := self class parseInput: sampleInput lines 
 ]
