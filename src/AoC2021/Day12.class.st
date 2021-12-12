@@ -1,9 +1,6 @@
 Class {
 	#name : #Day12,
 	#superclass : #DayInput,
-	#instVars : [
-		'accessibleFrom'
-	],
 	#category : #AoC2021
 }
 
