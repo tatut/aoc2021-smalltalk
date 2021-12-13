@@ -9,13 +9,23 @@ Class {
 	#category : #AoC2021
 }
 
+{ #category : #converting }
+Origami >> asString [
+	^ String streamContents: [ :out | 
+		0 to: height do: [ :y |
+			0 to: width do: [ :x |
+				out nextPut: ((dots includes: x@y) ifTrue: [ $# ] ifFalse: [ $. ]).
+			].
+			out nextPut: Character cr. ]]
+]
+
 { #category : #accessing }
 Origami >> dots [
 
 	^ dots
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 Origami >> foldedAtX: x [
 	"answer with new origami that is this origami folded at x"
 	^ self class new fromDots: 
@@ -27,7 +37,7 @@ Origami >> foldedAtX: x [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 Origami >> foldedAtY: y [
 	"answer with new origami that is this origami folded at y"
 	^ self class new fromDots: 
@@ -45,14 +55,4 @@ Origami >> fromDots: theDots [
 	height := (theDots collect: #y) max .
 	dots := Set withAll: theDots .
 	^ self
-]
-
-{ #category : #printing }
-Origami >> printOrigami [
-	0 to: height do: [ :y |
-		Transcript cr.
-		0 to: width do: [ :x |
-			Transcript show: ((dots includes: x@y) ifTrue: [ '#' ] ifFalse: [ '.' ]).
-		]
-	].
 ]

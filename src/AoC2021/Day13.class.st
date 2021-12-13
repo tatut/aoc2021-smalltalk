@@ -43,6 +43,6 @@ Day13 >> part2 [
 			     ifTrue: [ o foldedAtX: pos ]
 		 	    ifFalse: [ o foldedAtY: pos ].
 	].
-	o printOrigami 
+	^ o asString 
 
 ]
