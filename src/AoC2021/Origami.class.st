@@ -2,7 +2,6 @@ Class {
 	#name : #Origami,
 	#superclass : #Object,
 	#instVars : [
-		'grid',
 		'width',
 		'height',
 		'dots'
