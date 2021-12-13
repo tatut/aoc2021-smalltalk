@@ -18,23 +18,24 @@ Origami >> dots [
 { #category : #'as yet unclassified' }
 Origami >> foldedAtX: x [
 	"answer with new origami that is this origami folded at x"
-	| newDots |
-	newDots := Set withAll: (dots select: [ :d | d x < x ]).
-	(dots select: [ :d | d x > x ]) do: [ :d |
- 		newDots add: (x - (d x - x)) @ d y
-	].
-	^ Origami new fromDots: newDots	
+	^ self class new fromDots: 
+		(Set new fillFrom: dots 
+			with: [ :d | 
+				d x < x 
+					ifTrue: [ d ] 
+					ifFalse: [ (x - (d x - x)) @ d y ]])
+	
 ]
 
 { #category : #'as yet unclassified' }
 Origami >> foldedAtY: y [
 	"answer with new origami that is this origami folded at y"
-	| newDots |
-	newDots := Set withAll: (dots select: [ :d | d y < y ]).
-	(dots select: [ :d | d y > y ]) do: [ :d |
- 		newDots add: d x @ (y - (d y - y))
-	].
-	^ Origami new fromDots: newDots	
+	^ self class new fromDots: 
+		(Set new fillFrom: dots 
+			with: [ :d | 
+				d y < y 
+					ifTrue: [ d ] 
+					ifFalse: [ d x @ (y - (d y - y)) ]])
 ]
 
 { #category : #'instance creation' }
