@@ -1,7 +1,8 @@
 SmalltalkCISpec {
   #loading : [
     SCIMetacelloLoadSpec {
-      #baseline : 'AoC2021',
+      #configuration : 'AoC2021',
+      #directory: 'AoC2021',
       #platforms : [ #pharo ]
     }
   ]
