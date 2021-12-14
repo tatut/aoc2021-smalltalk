@@ -30,9 +30,9 @@ Day12 >> isBig: cave [
 Day12 >> part1 [
  	"find all paths from start-end"
 	| paths |
-	paths := OrderedCollection new.
-	self pathFrom: (OrderedCollection with: 'start') found: paths.
-	^ paths size
+	paths := 0.
+	self pathFrom: (OrderedCollection with: 'start') found: [ :dummy | paths := paths + 1 ].
+	^ paths
 
 ]
 
@@ -48,7 +48,7 @@ Day12 >> part2 [
 	smallCaves do: [ :c |
 		self pathFrom: (OrderedCollection with: 'start') 
 			smallCaveTwice: c
-			found: paths.			
+			found: [:p | paths add: p].			
 	].
 	^ paths size
 
@@ -88,7 +88,42 @@ Day12 >> pathFrom: path smallCaveTwice: twiceCave found: result [
 			p add: c.
 
 			(c = 'end') 
-				ifTrue: [ result add: p ]
+				ifTrue: [ result value: p ]
 				ifFalse: [ self pathFrom: p smallCaveTwice: twiceCave found: result ]
 			]
+]
+
+{ #category : #'as yet unclassified' }
+Day12 >> visualizePart1 [
+	| c animation positions paths caves connections |
+	c := RSCanvas new.
+	c @ RSCanvasController .
+	c open.
+	
+	positions := Dictionary new add: 'start' -> (150@30); add: 'end' -> (150@320); yourself.
+	paths := SortedCollection sortUsing: [:a :b | a size < b size].
+	self pathFrom: (OrderedCollection with: 'start') 
+		     found: [ :p | paths add: p ].
+	
+	caves := paths flatten asSet asOrderedCollection collect: [ :cave |
+ 	 	RSLabel new
+			model: cave;
+			draggable;
+			extent: 100@100;
+			position: (positions at: cave ifAbsent: [(300 atRandom) @ (200 atRandom + 50)]);
+			fontSize: ((self isBig: cave) ifTrue: [18] ifFalse:[12]);
+			text: cave; yourself. ].
+	c addAll: caves.
+	
+	connections := Dictionary new.
+	paths do: [ :path |
+		path overlappingPairsDo: [ :from :to |
+			connections at: from update: [ :cs | cs add: to; yourself ] initial: (Set with: to)
+		].
+	].
+	RSLineBuilder line shapes: caves; canvas: c; connectFrom: [ :d | d ] toAll: [ :d |
+		Transcript show: 'conn form:',d;cr.
+		connections at: d ifAbsent: #()] .
+	"animate each path"
+			
 ]
