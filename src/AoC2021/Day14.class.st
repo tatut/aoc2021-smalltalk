@@ -31,40 +31,22 @@ Day14 >> part2 [
 Day14 >> partWithSteps: steps [
 	| pairs counts rules |
 	rules := input at: 2.
-	pairs := Dictionary new.
+	pairs := CountDictionary new.
 	(input at:1) overlappingPairsDo: [ :a :b | 
-		| p |
-		p := a asString,b asString.
-		pairs at: p update: [ :c | c + 1 ] initial: 1].
+		pairs at: (a asString,b asString) incrementBy: 1
+	].
 	
 	steps timesRepeat: [  
-		| newPairs |
-		
 		"go through each pair, if it matches rule, increase left/right pairs"
-		newPairs := Dictionary new. 
-		pairs keysAndValuesDo: [ :pair :count |
-		  | insert |
-		  insert := rules at: pair ifAbsent: nil.
-		  insert
-		   ifNil: [ newPairs at: pair put: (pairs at: pair) ] 
-		   ifNotNil: [ 
-			| left right |
-			left := pair first asString, insert asString.
-			right := insert asString, pair second asString.
-			newPairs at: left update: [ :c | c + count ] initial: count.
-			newPairs at: right update: [ :c | c + count ] initial: count. 
-		  ].
-	     pairs := newPairs. 
-		]
-	].
+		pairs := CountDictionary from: pairs with: [ :d :pair :count |
+			| insert |
+		 	insert := (rules at: pair) asString.
+			d at: (pair first asString, insert asString) incrementBy: count;
+			  at: (insert asString, pair second asString) incrementBy: count ]].
 
    "element counts"
-	counts := Dictionary new.
-	pairs keysAndValuesDo: [ :pair :count |
-	  counts at: pair first update: [ :c | c + count ] initial: count.
-	  counts at: pair second update: [ :c | c + count ] initial: count.
-	
-	].
-	counts := SortedCollection withAll: counts values.
+	counts := (CountDictionary from: pairs with: [:cs :pair :count |
+	  cs at: pair first incrementBy: count;
+ 		  at: pair second incrementBy: count ]) counts.
 	^ ( (counts last / 2) ceiling - (counts first / 2) ceiling)
 ]
