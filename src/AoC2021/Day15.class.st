@@ -9,11 +9,6 @@ Day15 class >> parseInput: lines [
 	^ DayInput parseLinesToArray2D: lines 
 ]
 
-{ #category : #parsing }
-Day15 class >> parseLines: lines [
-	^ DayInput parseLinesToArray2D: lines 
-]
-
 { #category : #'as yet unclassified' }
 Day15 >> lowestRiskPathFrom: start to: goal [ 
 	"find lowest risk path from start to end"
