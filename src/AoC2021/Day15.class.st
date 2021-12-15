@@ -46,7 +46,6 @@ Day15 >> lowestRiskPathFrom: start to: goal [
 			ifFalse: [ 
 				(self neighborsAt: current) do: [ :neighbor |
 					| tentative_gScore |
-					"Transcript show: 'current: ', current asString, ' has neighbor ', neighbor asString;cr."
 					tentative_gScore := (gs value: current) + (self riskAt: neighbor).
 					tentative_gScore < (gs value: neighbor)
 						ifTrue: [ 
