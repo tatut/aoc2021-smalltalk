@@ -95,8 +95,7 @@ Day15 >> part2 [
 					 ]].
 	input := largeInput.
 	
- 	^ self riskForBestPath 
-
+ 	^ self riskForBestPath
 ]
 
 { #category : #'as yet unclassified' }
