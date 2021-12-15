@@ -14,7 +14,6 @@ Day15 >> lowestRiskPathFrom: start to: goal [
 	"find lowest risk path from start to end"
 	| openSet cameFrom gScore fScore gs fs |
 	
-	openSet := OrderedCollection with: start. 
 	cameFrom := Dictionary new.
 	gScore := Dictionary new.
 	gScore at: start put: 0.
@@ -24,9 +23,11 @@ Day15 >> lowestRiskPathFrom: start to: goal [
 	gs := [ :p | gScore at: p ifAbsent: 9999999 ].
 	fs := [ :p | fScore at: p ifAbsent: 9999999 ].
 	
+	openSet := SortedCollection sortUsing: [ :a :b | (fs value: a) < (fs value: b) ].
+	openSet add: start. 
+	
 	[ openSet isEmpty ] whileFalse: [ 
 		| current |
-		openSet sort: [ :a :b | (fs value: a) < (fs value: b) ].
 		current := openSet removeFirst.
 		current = goal 
 			ifTrue: [
