@@ -64,3 +64,20 @@ Day15 >> riskForBestPath [
 	^ self pathRisk: (self lowestRiskPathFrom: 1@1 to: (input extent))
 
 ]
+
+{ #category : #'as yet unclassified' }
+Day15 >> visualizePathFindingFrom: start to: goal [
+	"show a Morph visualization of finding the path"
+	| finder vis |
+	finder := Day15ArrayPath withInput: input.
+	vis := Day15Morph new. 
+	vis grid: input.
+	finder stepHook: [ :cur :cameFrom | vis updatePathFindingState: cur cameFrom: cameFrom ].
+	vis openInWorld .
+	[ finder findPathFrom: start to: goal.
+	  Transcript show: 'found solution!';cr.
+	  World removeMorph: vis ] fork .
+
+
+
+]

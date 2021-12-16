@@ -1,6 +1,9 @@
 Class {
 	#name : #AStar,
 	#superclass : #Object,
+	#instVars : [
+		'stepHook'
+	],
 	#category : #AoC2021
 }
 
@@ -36,6 +39,10 @@ AStar >> findPathFrom: start to: goal [
 	[ openSet isEmpty ] whileFalse: [ 
 		| current |
 		current := openSet removeFirst.
+		
+		"hook for visualization, call it with current and came from maps"
+		stepHook ifNotNil: [ stepHook value: current value: cameFrom ].
+		
 		current = goal 
 			ifTrue: [
 				| path prev |
@@ -76,4 +83,10 @@ AStar >> heuristicFrom: fromNode to: toNode [
 AStar >> neighbors: aNode do: aBlock [
 	"execute aBlock for each neighbor aNode"
 	SubclassResponsibility signal: 'Subclass must implement neighbors' 
+]
+
+{ #category : #accessing }
+AStar >> stepHook: anObject [
+
+	stepHook := anObject
 ]
