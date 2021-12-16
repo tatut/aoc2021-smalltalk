@@ -12,18 +12,16 @@ Class {
 
 { #category : #drawing }
 Day15Morph >> drawOn: canvas [ 
-	| origin from screenPos |
+	| from screenPos |
 	current ifNil: [ ^ #notStarted ].
 	canvas fillRectangle: self bounds color: Color white.
 	
-	origin := current - (7@7).
-	screenPos := [ :pos | self position + (pos - origin * 30). ].
+	screenPos := [ :pos | self position + (pos - (1@1) * 20). ].
 
 	"render 15x15 grid of neighbors"	
-	(current y - 7) to: (current y + 7) do: [ :y |
-		(current x - 7) to: (current x + 7) do: [ :x |
+	1 to: (grid rowCount) do: [ :y |
+		1 to: (grid columnCount) do: [ :x |
 			| risk |
-				Transcript show:'drawOn! 3';cr.
 
 			"get risk level here, if in bounds"
 			risk := grid at: y at: x ifInvalid: nil.
@@ -32,8 +30,8 @@ Day15Morph >> drawOn: canvas [
 				c := Color r: 1 g: 0 b:0 alpha: 0.1 + (0.1*risk).
 				p := screenPos value: x@y.
 				
-				canvas fillRectangle: (p corner: p + (30@30)) color: c. 
-				canvas drawString: risk asString at: p + (10@10). 
+				canvas fillRectangle: (p corner: p + (20@20)) color: c. 
+				canvas drawString: risk asString at: p + (7@2). 
 			]
 		 ]
 	].
@@ -42,7 +40,7 @@ Day15Morph >> drawOn: canvas [
 	[ from isNotNil ] whileTrue: [ 
 		| to |
 		to := cameFrom at: from ifAbsent: nil.
-		to ifNotNil: [ canvas line: (screenPos value: from) + (15@15) to: (screenPos value: to) + (15@15) width: 4 color: Color green ].
+		to ifNotNil: [ canvas line: (screenPos value: from) + (10@10) to: (screenPos value: to) + (10@10) width: 4 color: Color green ].
 		from := to.
 	].
  	renderSempahore signal.
@@ -57,7 +55,7 @@ Day15Morph >> grid: anObject [
 { #category : #initialization }
 Day15Morph >> initialize [ 
 	super initialize.
-	self bounds: (30@30 corner: 480@480).
+	self bounds: (20@20 corner: 1020@1020).
 	renderSempahore := Semaphore forMutualExclusion .
 	self startStepping 
 	
