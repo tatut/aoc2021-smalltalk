@@ -39,3 +39,10 @@ SnailfishNumberTest >> testParsing [
 	self assert: (SnailfishNumber parse: (ReadStream on: '[[[[[9,8],1],2],3],4]')) asString 
 		equals: '[[[[[9,8],1],2],3],4]'
 ]
+
+{ #category : #tests }
+SnailfishNumberTest >> testReduce [
+	"first test case from description"
+	self assert: (SnailfishNumber fromString: '[[[[[4,3],4],4],[7,[[8,4],9]]],[1,1]]') reduce asString
+		equals: '[[[[0,7],4],[[7,8],[6,0]]],[8,1]]'
+]
