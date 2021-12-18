@@ -27,13 +27,6 @@ SnailfishNumberTest >> testExplode [
 	self assert: n asString equals: '[[6,[5,[7,0]]],3]'.
 ]
 
-{ #category : #test }
-SnailfishNumberTest >> testNextLeaf [
-
-	self flag: #toImplement.
-	self assert: false
-]
-
 { #category : #tests }
 SnailfishNumberTest >> testParsing [
 	self assert: (SnailfishNumber parse: (ReadStream on: '[[[[[9,8],1],2],3],4]')) asString 
