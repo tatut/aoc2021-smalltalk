@@ -20,18 +20,10 @@ Day19 class >> parseInput: lines [
 ]
 
 { #category : #'as yet unclassified' }
-Day19 >> allBeaconCoords: scanners [
-  | set |
-  set := Set new.
-  scanners do: [ :scan | scan seen do: [ :b | set add: b coords ]].
-  ^ set
-]
-
-{ #category : #'as yet unclassified' }
 Day19 >> allBeacons: scanners [
   | set |
   set := Set new.
-  scanners do: [ :scan | scan seen do: [ :b | set add: b ]].
+  scanners do: [ :scan | scan seen do: [ :b | set add: b asString ]]. "weird, some hash problem with points,use strings"
   ^ set
 ]
 
@@ -70,10 +62,7 @@ Day19 >> firstWithMatching: scanners scanner: scanner [
 
 { #category : #solutions }
 Day19 >> part1 [		
-	| scanners beacons |
-	scanners := self findScanners .
-	beacons := self allBeaconCoords: scanners.	
-	^ beacons size 
+	^ (self allBeacons: self findScanners) size 
 ]
 
 { #category : #solutions }
