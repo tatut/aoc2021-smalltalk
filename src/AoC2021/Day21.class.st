@@ -27,31 +27,16 @@ Day21 >> part1: initialPos1 and: initialPos2 [
 
 { #category : #solutions }
 Day21 >> part2: initialPos1 and: initialPos2 [  
-  | p1wins p2wins games roll3Sums |
+  | p1wins p2wins games playRound |
  p1wins := 0.
  p2wins := 0.
  games := LinkedList new.
-
- "different sums of 3 rolls, and how many times they appear"
- roll3Sums := Dictionary new 
-	add: 3 -> 1;
-	add: 4 -> 3;
-	add: 5 -> 6;
-	add: 6 -> 7;
-	add: 7 -> 6;
-	add: 8 -> 3;
-	add: 9 -> 1; yourself.
 
  games add: (Day21Game new 
 		pos1: (initialPos1 - 1);
 		pos2: (initialPos2 - 1)).
 		
- [ games isNotEmpty ] whileTrue: [ 
-	"while there are unplayed game universes"
-	| g |
-	g := games removeFirst .
-	"play this game for"
-	roll3Sums keysAndValuesDo: [ :s :count | 
+ playRound := [ :g :s :count | 
 		| ng |
 		ng := g copy.
 		ng turn = 1 
@@ -70,8 +55,21 @@ Day21 >> part2: initialPos1 and: initialPos2 [
 				ng score2: (ng score2 + ng pos2 + 1).
 				ng score2 >= 21 
 					ifTrue: [ p2wins := p2wins + ng appears ]
-					ifFalse: [ games add: ng ] ]
-	]].
+					ifFalse: [ games add: ng ] ]].
+				
+ [ games isNotEmpty ] whileTrue: [ 
+	"while there are unplayed game universes"
+	| g |
+	g := games removeFirst .
+	"play this game for all possible outcomes and their counts"
+	playRound value: g value: 3 value: 1.
+	playRound value: g value: 4 value: 3.
+	playRound value: g value: 5 value: 6.
+	playRound value: g value: 6 value: 7.
+	playRound value: g value: 7 value: 6.
+	playRound value: g value: 8 value: 3.
+	playRound value: g value: 9 value: 1.
+ ].
 
   ^ p1wins max: p2wins
 
