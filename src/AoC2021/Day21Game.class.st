@@ -7,13 +7,27 @@ Class {
 		'pos2',
 		'score2',
 		'rolledCount',
-		'turn'
+		'turn',
+		'appears'
 	],
 	#category : #AoC2021
 }
 
+{ #category : #accessing }
+Day21Game >> appears [
+
+	^ appears
+]
+
+{ #category : #accessing }
+Day21Game >> appears: anObject [
+
+	appears := anObject
+]
+
 { #category : #initialization }
 Day21Game >> initialize [
+	appears := 1.
 	turn := 1.
 	score1 := 0.
 	score2 := 0.

@@ -65,9 +65,15 @@ Day21 >> part2: initialPos1 and: initialPos2 [
  p2wins := 0.
  games := OrderedCollection new.
 
- "all possible outcomes of rolling d3 three times"
- "pending: can we count duplicates in game state to optimize?"
- roll3Sums := #(3 4 5 4 5 6 5 6 7 4 5 6 5 6 7 6 7 8 5 6 7 6 7 8 7 8 9).
+ "different sums of 3 rolls, and how many times they appear"
+ roll3Sums := Dictionary new 
+	add: 3 -> 1;
+	add: 4 -> 3;
+	add: 5 -> 6;
+	add: 6 -> 7;
+	add: 7 -> 6;
+	add: 8 -> 3;
+	add: 9 -> 1; yourself.
 
  games add: (Day21Game new 
 		pos1: (initialPos1 - 1);
@@ -78,23 +84,25 @@ Day21 >> part2: initialPos1 and: initialPos2 [
 	| g |
 	g := games removeFirst .
 	"play this game for"
-	roll3Sums do: [ :s | 
+	roll3Sums keysAndValuesDo: [ :s :count | 
 		| ng |
 		ng := g copy.
 		ng turn = 1 
 			ifTrue: [  
 				ng turn: 2.
+				ng appears: (ng appears * count).
 				ng pos1: (ng pos1 + s) % 10.
 				ng score1: (ng score1 + ng pos1 + 1).
 				ng score1 >= 21 
-					ifTrue: [ p1wins := p1wins + 1 ]
+					ifTrue: [ p1wins := p1wins + ng appears ]
 					ifFalse: [ games add: ng ] ]
 			ifFalse: [ 
 				ng turn: 1.
+				ng appears: (ng appears * count).
 				ng pos2: (ng pos2 + s) % 10.
 				ng score2: (ng score2 + ng pos2 + 1).
 				ng score2 >= 21 
-					ifTrue: [ p2wins := p2wins + 1 ]
+					ifTrue: [ p2wins := p2wins + ng appears ]
 					ifFalse: [ games add: ng ] ]
 	]].
   Transcript show: 'P1 wins: ', p1wins asString, ' P2 wins: ', p2wins asString;cr.
