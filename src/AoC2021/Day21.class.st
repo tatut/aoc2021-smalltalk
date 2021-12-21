@@ -30,7 +30,7 @@ Day21 >> part2: initialPos1 and: initialPos2 [
   | p1wins p2wins games roll3Sums |
  p1wins := 0.
  p2wins := 0.
- games := OrderedCollection new.
+ games := LinkedList new.
 
  "different sums of 3 rolls, and how many times they appear"
  roll3Sums := Dictionary new 
