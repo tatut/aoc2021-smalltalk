@@ -106,6 +106,6 @@ Day21 >> part2: initialPos1 and: initialPos2 [
 					ifFalse: [ games add: ng ] ]
 	]].
   Transcript show: 'P1 wins: ', p1wins asString, ' P2 wins: ', p2wins asString;cr.
-  ^ p1wins min: p2wins
+  ^ p1wins max: p2wins
 
 ]
