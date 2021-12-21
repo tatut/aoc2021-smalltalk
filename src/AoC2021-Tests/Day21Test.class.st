@@ -10,7 +10,7 @@ Class {
 { #category : #running }
 Day21Test >> setUp [
 	super setUp.
-	self executionEnvironment maxTimeForTest: 25 seconds 
+	self executionEnvironment maxTimeForTest: 2 minutes 
 	"Put here a common initialization logic for tests"
 ]
 

@@ -5,33 +5,6 @@ Class {
 }
 
 { #category : #solutions }
-Day21 >> part1 [ 
- | dice pos1 score1 pos2 score2 |
- dice := Day21DeterministicDice new.
-
-  "starting pos (-1 to wrap) "
-  pos1 := 4 - 1.
-  pos2 := 8 - 1.   
-
-  score1 := 0. score2 := 0.
-  [ true ] whileTrue: [ 
-	 Transcript show: 'P1 ', pos1 asString, ' => '.
-	 pos1 := (pos1 + dice roll + dice roll + dice roll) % 10.
-	 score1 := score1 + pos1 + 1.
-	 Transcript show: pos1 asString, ' SCORE: ', score1 asString;cr.
-	 
-	score1 >= 1000 ifTrue: [ ^ score2 * dice rolledCount  ].
-	 
-	 Transcript show: 'P2 ', pos2 asString, ' => '.
-	 pos2 := (pos2 + dice roll + dice roll + dice roll) % 10.
-	 score2 := score2 + pos2 + 1.
-	 Transcript show: pos2 asString, ' SCORE: ', score2 asString.
-
-	score2 >= 1000 ifTrue: [ ^ score1 * dice rolledCount ].
-  ]
-]
-
-{ #category : #solutions }
 Day21 >> part1: initialPos1 and: initialPos2 [  
  | dice pos1 score1 pos2 score2 |
  dice := Day21DeterministicDice new.
@@ -42,19 +15,13 @@ Day21 >> part1: initialPos1 and: initialPos2 [
 
   score1 := 0. score2 := 0.
   [ true ] whileTrue: [ 
-	 Transcript show: 'P1 ', pos1 asString, ' => '.
 	 pos1 := (pos1 + dice roll + dice roll + dice roll) % 10.
 	 score1 := score1 + pos1 + 1.
-	 Transcript show: pos1 asString, ' SCORE: ', score1 asString;cr.
+	 score1 >= 1000 ifTrue: [ ^ score2 * dice rolledCount  ].
 	 
-	score1 >= 1000 ifTrue: [ ^ score2 * dice rolledCount  ].
-	 
-	 Transcript show: 'P2 ', pos2 asString, ' => '.
 	 pos2 := (pos2 + dice roll + dice roll + dice roll) % 10.
 	 score2 := score2 + pos2 + 1.
-	 Transcript show: pos2 asString, ' SCORE: ', score2 asString.
-
-	score2 >= 1000 ifTrue: [ ^ score1 * dice rolledCount ].
+	 score2 >= 1000 ifTrue: [ ^ score1 * dice rolledCount ].
   ]
 ]
 
@@ -105,7 +72,7 @@ Day21 >> part2: initialPos1 and: initialPos2 [
 					ifTrue: [ p2wins := p2wins + ng appears ]
 					ifFalse: [ games add: ng ] ]
 	]].
-  Transcript show: 'P1 wins: ', p1wins asString, ' P2 wins: ', p2wins asString;cr.
+
   ^ p1wins max: p2wins
 
 ]
