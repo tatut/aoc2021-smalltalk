@@ -10,10 +10,7 @@ Class {
 
 { #category : #converting }
 Day22Step >> asString [ 
-	^ '<turn: ', (state = 1 ifTrue:'on' ifFalse:'off'), 
-		' x:', cuboid xrange asString, 
-		' y:', cuboid yrange asString, 
-		' z:', cuboid zrange asString, '>'
+	^ '<turn: ', (state = 1 ifTrue:'on' ifFalse:'off'), cuboid asString, '>'
 ]
 
 { #category : #accessing }
