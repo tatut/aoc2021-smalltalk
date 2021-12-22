@@ -19,6 +19,20 @@ Day22Cuboid >> allPoints [
 					out nextPut: { x . y . z } ]]]]
 ]
 
+{ #category : #'as yet unclassified' }
+Day22Cuboid >> allPointsSmall [
+	"return naive collection of all points" 
+	^ OrderedCollection streamContents: [ :out |
+		-50 to: 50 do: [ :x |
+			-50 to: 50 do: [ :y |
+				-50 to: 50 do: [ :z |
+					(xrange rangeIncludes: x) &
+					(yrange rangeIncludes: y) &
+					(zrange rangeIncludes: z)
+						ifTrue: [ out nextPut: { x . y . z } ] ] ] ] ]
+		
+]
+
 { #category : #accessing }
 Day22Cuboid >> count [ 
 	"how many cubes in this cuboid"
@@ -59,6 +73,65 @@ Day22Cuboid >> diff: cuboid [
 	^ { add . del }      
 
 
+]
+
+{ #category : #accessing }
+Day22Cuboid >> firstIntersecting: cuboids [
+	^ cuboids detect: [ :c | (self intersects: c) ifTrue: [ ^ c ] ] ifNone: nil.
+]
+
+{ #category : #testing }
+Day22Cuboid >> intersects: aCuboid [
+	"does this intersect with given cuboid"
+	| rangeIntersects |
+	rangeIntersects := [ :r1 :r2 |
+		"r1 completely in r2"
+		((r2 first <= r1 first) & r2 last >= r1 last) |
+		"or either of r2 ends within r1 range"
+		(r1 rangeIncludes: r2 first) |
+		(r1 rangeIncludes: r2 last)
+	].
+	^ (rangeIntersects value: xrange value: aCuboid xrange) &
+	  (rangeIntersects value: yrange value: aCuboid yrange) &
+	  (rangeIntersects value: zrange value: aCuboid zrange)
+]
+
+{ #category : #removing }
+Day22Cuboid >> remove: c [
+	"answer with the new set of cuboids that result from removing
+	the given cuboid from this one"
+	^ OrderedCollection streamContents: [ :out |
+		| x1 x2 y1 y2 z1 z2|
+		x1 := xrange first. x2 := xrange last.
+		y1 := yrange first. y2 := yrange last.
+		z1 := zrange first. z2 := zrange last.
+		(x1 < c xrange first) ifTrue: [ 
+			"other is inside in X dim, cut out cube from before it"
+			out nextPut: (self copy xrange: (x1 to: c xrange first - 1)).
+			x1 := c xrange first. ].
+		(x2 > c xrange last) ifTrue: [ 
+			"other X ends before this, cut out cube form after it"
+			out nextPut: (self copy xrange: (c xrange last + 1 to: x2)).
+			x2 := c xrange last ].
+		(y1 < c yrange first) ifTrue: [ 
+			"other Y is larger, cut out cube from before it"
+			out nextPut: (self copy xrange: (x1 to: x2); yrange: (y1 to: c yrange first - 1)).
+			y1 := c yrange first ].
+		(y2 > c yrange last) ifTrue: [ 
+			"other Y ends before this, cut out cube from after it"
+			out nextPut: (self copy xrange: (x1 to: x2); yrange: (c yrange last + 1 to: y2)).
+			y2 := c yrange last ].
+		(z1 < c zrange first) ifTrue: [ 
+			out nextPut: (self class new 
+				xrange: (x1 to: x2); 
+				yrange: (y1 to: y2); 
+				zrange: (z1 to: c zrange first - 1)) ].
+		(z2 > c zrange last) ifTrue: [ 
+			out nextPut: (self class new
+				xrange: (x1 to: x2);
+				yrange: (y1 to: y2);
+				zrange: (c zrange last + 1 to: z2)) ].
+	]
 ]
 
 { #category : #accessing }
