@@ -28,39 +28,35 @@ Day22 >> part1 [
 
 { #category : #solutions }
 Day22 >> part2 [
+	^ self runSteps 
+]
+
+{ #category : #solutions }
+Day22 >> runSteps [
 	| on |
 	"cube splicing, version on is a set of cubes that are in on state"
    on := OrderedCollection new.
 	input do: [ :step |
 		| c | 
 		c := step cuboid.
-		Transcript show: 'Running step: ', step asString, '  C: ', step cuboid count asString;cr.
-		"if step is on, remove any currently intersecting cube from it
+		"if step is ON, remove any currently intersecting cube from it
 		 and add to set of on cubes.
 		
-		 if step if off, remove it from any currently on cubes and add
+		 if step if OFF, remove it from any currently on cubes and add
 		 those results to on cubes"
 		step state = 1
-			ifTrue: [ 
-				| toAdd |
-				toAdd := c removeAll: on.
-				on addAll: toAdd .
-			]
-		ifFalse: [ 
-			"remove this from all ON cuboids"
-			| newOn |
-			newOn := OrderedCollection  new.
-			on do: [ :onCuboid |
-				(onCuboid intersects: c)
-					ifTrue: [ 
-						Transcript show: 'REMOVE from: ', onCuboid asString, ' remove: ', c asString;cr.
-						newOn addAll: (onCuboid remove: c) ]
-					ifFalse: [ newOn add: onCuboid ]
+			ifTrue: [ on addAll: (c removeAll: on) ]
+			ifFalse: [ 
+				"remove this from all ON cuboids"
+				| newOn |
+				newOn := OrderedCollection  new.
+				on do: [ :onCuboid |
+					(onCuboid intersects: c)
+						ifTrue: [ newOn addAll: (onCuboid remove: c) ]
+						ifFalse: [ newOn add: onCuboid ]
+				].
+				on := newOn.			
 			].
-			on := newOn.
-			
-			 ].
-		on isNotEmpty ifTrue: [ Transcript show: (on collect: #count) sum asString;cr ].
 	].
    ^ (on collect: #count) sum
 ]

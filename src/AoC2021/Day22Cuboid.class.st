@@ -22,16 +22,6 @@ Day22Cuboid >> = anObject [
 ]
 
 { #category : #'as yet unclassified' }
-Day22Cuboid >> allPoints [
-	"return naive collection of all points"
-	^ OrderedCollection streamContents: [ :out |
-		xrange do: [ :x |
-			yrange do: [ :y |
-				zrange do: [ :z |
-					out nextPut: { x . y . z } ]]]]
-]
-
-{ #category : #'as yet unclassified' }
 Day22Cuboid >> allPointsSmall [
 	"return naive collection of all points" 
 	^ OrderedCollection streamContents: [ :out |
@@ -177,16 +167,13 @@ Day22Cuboid >> removeAll: cuboids [
 	| cs intersecting |
 	intersecting := cuboids select: [ :c | self intersects: c ].
 	intersecting isEmpty ifTrue: [ ^ { self copy } ].
-	Transcript show: ' intersecting: ', intersecting size asString ;cr.
 	cs := self remove: intersecting first.
 	intersecting allButFirst do: [ :c | 
 		| newCs |
 		newCs := OrderedCollection new.
 		cs do: [ :c1 |
 			(c intersects: c1)
-				ifTrue: [ 
-					Transcript show: ' lisää intersect ', c1 asString, '  POISTA: ',  c asString;cr.
-					newCs addAll: (c1 remove: c) ]
+				ifTrue: [ newCs addAll: (c1 remove: c) ]
 				ifFalse: [ newCs add: c1 ]].
 		cs := newCs.
 	].
